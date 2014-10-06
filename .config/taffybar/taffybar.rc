@@ -1,0 +1,8 @@
+style "default" {
+  font_name = "Inconsolata 12"
+  bg[NORMAL] = "#fdf6e3"
+  fg[NORMAL] = "#657b83"
+  text[NORMAL] = "#657b83"
+}
+
+widget "Taffybar*" style "default"
