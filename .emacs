@@ -253,7 +253,8 @@ re-downloaded in order to locate PACKAGE."
 
 (use-package smartparens
   :config (progn
-            (smartparens-global-mode))
+            (smartparens-global-mode)
+	    (show-smartparens-global-mode))
   :ensure t)
 
 (use-package undo-tree
