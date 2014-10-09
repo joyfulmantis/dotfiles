@@ -13,16 +13,17 @@
 (setq custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default))
       electric-indent-mode t
       inhibit-startup-screen t
-      indent-tabs-mode nil
       mouse-autoselect-window t
       x-super-keysym 'meta)
+
+(setq-default indent-tabs-mode nil)
 
 (column-number-mode)
 
 (global-unset-key (kbd "C-z"))
 
 (eval-after-load "dired-aux"
-   '(add-to-list 'dired-compress-file-suffixes 
+   '(add-to-list 'dired-compress-file-suffixes
                  '("\\.zip\\'" ".zip" "unzip")))
 
 
@@ -254,7 +255,7 @@ re-downloaded in order to locate PACKAGE."
 (use-package smartparens
   :config (progn
             (smartparens-global-mode)
-	    (show-smartparens-global-mode))
+            (show-smartparens-global-mode))
   :ensure t)
 
 (use-package undo-tree
