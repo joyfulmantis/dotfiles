@@ -247,6 +247,9 @@ re-downloaded in order to locate PACKAGE."
 (use-package sicp
   :ensure t)
 
+(use-package sml-mode
+  :ensure t)
+
 (use-package solarized-theme
   :config (progn
             (load-theme 'solarized-light))
