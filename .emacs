@@ -26,7 +26,6 @@
    '(add-to-list 'dired-compress-file-suffixes
                  '("\\.zip\\'" ".zip" "unzip")))
 
-
 ;;; Setup package
 (require 'package)
 
@@ -73,6 +72,9 @@ re-downloaded in order to locate PACKAGE."
   :ensure t)
 
 (use-package dired+
+  :ensure t)
+
+(use-package elfeed
   :ensure t)
 
 (use-package expand-region
