@@ -23,8 +23,8 @@
 (global-unset-key (kbd "C-z"))
 
 (eval-after-load "dired-aux"
-   '(add-to-list 'dired-compress-file-suffixes
-                 '("\\.zip\\'" ".zip" "unzip")))
+  '(add-to-list 'dired-compress-file-suffixes
+                '("\\.zip\\'" ".zip" "unzip")))
 
 ;;; Setup package
 (require 'package)
@@ -47,9 +47,12 @@ re-downloaded in order to locate PACKAGE."
         (require-package package min-version t)))))
 
 
-;;; And now the rest is use-package configuration
+;;; And now the rest is req-package configuration
 (require-package 'use-package)
 (require 'use-package)
+
+(require-package 'req-package)
+(require 'req-package)
 
 ;;; These are some packaes I want to learn sometime
 ;; (use-package evil
@@ -59,55 +62,42 @@ re-downloaded in order to locate PACKAGE."
 ;; (use-package org
 ;;   :ensure t)
 
-(use-package diminish
-  :ensure t)
+(req-package diminish)
 
-(use-package ace-jump-mode
-  :bind ("C-c SPC" . ace-jump-mode)
-  :ensure t)
+(req-package ace-jump-mode
+  :bind ("C-c SPC" . ace-jump-mode))
 
-(use-package auto-complete
+(req-package auto-complete
   :config (progn
-            (global-auto-complete-mode))
-  :ensure t)
+            (global-auto-complete-mode)))
 
-(use-package dired+
-  :ensure t)
+(req-package dired+)
 
-(use-package elfeed
-  :ensure t)
+(req-package elfeed)
 
-(use-package expand-region
-  :bind ("C-=" . er/expand-region)
-  :ensure t)
+(req-package expand-region
+  :bind ("C-=" . er/expand-region))
 
-(use-package flycheck
+(req-package flycheck
   :config (progn
-            (global-flycheck-mode))
-  :ensure t)
+            (global-flycheck-mode)))
 
-(use-package geiser
+(req-package geiser)
+
+(req-package ac-geiser
+  :require (auto-complete geiser)
   :config (progn
-            (use-package ac-geiser
-              :config (progn
-                        (add-hook 'geiser-mode-hook 'ac-geiser-setup)
-                        (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
-                        (eval-after-load "auto-complete"
-                          '(add-to-list 'ac-modes 'geiser-repl-mode)))
-              :ensure t))
-  :ensure t)
+            (add-hook 'geiser-mode-hook 'ac-geiser-setup)
+            (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
+            (add-to-list 'ac-modes 'geiser-repl-mode)))
 
-(use-package gist
-  :ensure t)
+(req-package gist)
 
-(use-package gitconfig-mode
-  :ensure t)
-(use-package gitignore-mode
-  :ensure t)
-(use-package gitattributes-mode
-  :ensure t)
+(req-package gitconfig-mode)
+(req-package gitignore-mode)
+(req-package gitattributes-mode)
 
-(use-package haskell-mode
+(req-package haskell-mode
   :bind (("M-."     . haskell-mode-jump-to-def-or-tag)
          ("C-c C-l" . haskell-process-load-or-reload)
          ("C-`"     . haskell-interactive-bring)
@@ -127,54 +117,54 @@ re-downloaded in order to locate PACKAGE."
             (setq haskell-stylish-on-save t)
             (setq haskell-tags-on-save t)
 
-            (use-package shm
-              :config (progn
-                        (add-hook 'haskell-mode-hook 'structured-haskell-mode))
-             :ensure t)
-            (use-package ac-haskell-process
-              :bind ("C-c C-d" . ac-haskell-process-popup-doc)
-              :config (progn
-                        (add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
-                        (add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
-
-                        (eval-after-load "auto-complete"
-                          '(add-to-list 'ac-modes 'haskell-interactive-mode))
-                        (defun set-auto-complete-as-completion-at-point-function ()
-                          (add-to-list 'completion-at-point-functions 'auto-complete))
-                        (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
-                        (add-to-list 'ac-modes 'haskell-interactive-mode)
-                        (add-hook 'haskell-interactive-mode-hook 'set-auto-complete-as-completion-at-point-function)
-                        (add-hook 'haskell-mode-hook 'set-auto-complete-as-completion-at-point-function))
-              :ensure t))
+            )
   :ensure t)
 
-(use-package helm
+(req-package shm
+  :require haskell-mode
+  :config (progn
+            (add-hook 'haskell-mode-hook 'structured-haskell-mode)))
+
+(req-package ac-haskell-process
+  :require (auto-complete haskell-mode)
+  :bind ("C-c C-d" . ac-haskell-process-popup-doc)
+  :config (progn
+            (add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
+            (add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
+
+            (add-to-list 'ac-modes 'haskell-interactive-mode)
+            (defun set-auto-complete-as-completion-at-point-function ()
+              (add-to-list 'completion-at-point-functions 'auto-complete))
+            (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+            (add-to-list 'ac-modes 'haskell-interactive-mode)
+            (add-hook 'haskell-interactive-mode-hook 'set-auto-complete-as-completion-at-point-function)
+            (add-hook 'haskell-mode-hook 'set-auto-complete-as-completion-at-point-function)))
+
+(req-package helm
   :bind (("M-x"     . helm-M-x)
          ("M-y"     . helm-show-kill-ring)
          ("C-x b"   . helm-mini)
          ("C-x C-f" . helm-find-files))
-  :config (progn
-            (helm-mode)
-            (use-package helm-descbinds
-              :init
-              (helm-descbinds-mode)
-              :ensure t)
-            (use-package helm-swoop
-              :ensure t))
-  :diminish helm-mode
-  :ensure t)
+  :config (helm-mode)
+  :diminish helm-mode)
 
-(use-package magit
-  :config (progn
-            (use-package git-commit-mode
-              :ensure t)
-            (use-package git-rebase-mode
-              :ensure t)
-            (use-package magit-gh-pulls
-              :ensure t))
-  :ensure t)
+(req-package helm-descbinds
+  :require helm
+  :init
+  (helm-descbinds-mode))
 
-(use-package mu4e
+(req-package helm-swoop)
+
+(req-package magit)
+
+(req-package git-commit-mode
+  :require magit)
+(req-package git-rebase-mode
+  :require magit)
+(req-package magit-gh-pulls
+  :require magit)
+
+(req-package mu4e
   :load-path "/usr/share/emacs24/site-lisp/mu4e/"
   :commands 'mu4e
   :config (progn
@@ -219,61 +209,39 @@ re-downloaded in order to locate PACKAGE."
             (setq mu4e-headers-include-related t)
             (setq mu4e-headers-skip-duplicates t)))
 
-(use-package projectile
+(req-package projectile
   :config (progn
             (projectile-global-mode)
             (setq projectile-mode-line
-                  '(:eval (format " P[%s]" (projectile-project-name)))))
-            (use-package helm-projectile
-              :config (progn
-                        (helm-projectile-on))
-              :ensure t)
-  :ensure t)
+                  '(:eval (format " P[%s]" (projectile-project-name))))))
 
-(use-package scala-mode2
-  :config (progn
-            (use-package ensime
-              :bind ("C-c C-c" . my-scala-eval-buffer)
-              :config (progn
-                        (defun my-scala-eval-buffer ()
-                          "My scala-eval-buffer method."
-                          (interactive)
-                          (ensime-inf-send-string ":reset")
-                          (ensime-inf-send-string ":paste -raw")
-                          (ensime-inf-eval-buffer)
-                          (comint-send-string ensime-inf-buffer-name ""))
-                        (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
-              :ensure t))
-  :ensure t)
+(req-package helm-projectile
+  :require (helm projectile)
+  :config (helm-projectile-on))
 
-(use-package sicp
-  :ensure t)
+(req-package scala-mode2)
 
-(use-package sml-mode
-  :ensure t)
+(req-package sicp)
 
-(use-package solarized-theme
-  :config (progn
-            (load-theme 'solarized-light))
-  :ensure t)
+(req-package sml-mode)
 
-(use-package smartparens
+(req-package solarized-theme
+  :config (load-theme 'solarized-light))
+
+(req-package smartparens
   :config (progn
             (smartparens-global-mode)
-            (show-smartparens-global-mode))
-  :ensure t)
+            (show-smartparens-global-mode)))
 
-(use-package undo-tree
-  :config (progn
-            (global-undo-tree-mode))
-  :diminish undo-tree-mode
-  :ensure t)
+(req-package undo-tree
+  :config (global-undo-tree-mode)
+  :diminish undo-tree-mode)
 
-(use-package w3m
-  :config (progn
-            (eval-after-load "haskell-mode"
-              '(add-hook 'w3m-display-hook 'w3m-haddock-display)))
-  :ensure t)
+(req-package w3m
+  :config (eval-after-load "haskell-mode"
+            '(add-hook 'w3m-display-hook 'w3m-haddock-display)))
+
+(req-package-finish)
 
 (provide '.emacs)
 ;;; .emacs ends here
