@@ -80,7 +80,9 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package flycheck
   :config (progn
-            (global-flycheck-mode)))
+            (global-flycheck-mode)
+            (setq flycheck-scalastyle-jar "/opt/scalastyle-batch_2.10-0.5.0/scalastyle-batch_2.10.jar"
+                  flycheck-scalastylerc "/opt/scalastyle-batch_2.10-0.5.0/scalastyle_config.xml")))
 
 (req-package geiser)
 
@@ -195,8 +197,7 @@ re-downloaded in order to locate PACKAGE."
             ;; something about ourselves
             (setq
              user-mail-address "joyfulmantis@gmail.com"
-             user-full-name  "Nathan Maxson"
-             mu4e-compose-signature "--Nathan \n")
+             user-full-name  "Nathan Maxson")
 
             (setq message-send-mail-function 'smtpmail-send-it
                   smtpmail-stream-type 'starttls
@@ -236,10 +237,6 @@ re-downloaded in order to locate PACKAGE."
 (req-package undo-tree
   :config (global-undo-tree-mode)
   :diminish undo-tree-mode)
-
-(req-package w3m
-  :config (eval-after-load "haskell-mode"
-            '(add-hook 'w3m-display-hook 'w3m-haddock-display)))
 
 (req-package-finish)
 
