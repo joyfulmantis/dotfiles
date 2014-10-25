@@ -167,38 +167,6 @@ re-downloaded in order to locate PACKAGE."
 (req-package magit-gh-pulls
   :require magit)
 
-(req-package mu4e
-  :load-path "/usr/share/emacs24/site-lisp/mu4e/"
-  :commands 'mu4e
-  :config (progn
-            (setq mu4e-drafts-folder "/[Gmail].Drafts")
-            (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
-            (setq mu4e-trash-folder  "/[Gmail].Trash")
-
-            (setq mu4e-sent-messages-behavior 'delete)
-
-            (setq mu4e-maildir-shortcuts
-                  '( ("/INBOX"               . ?i)
-                     ("/[Gmail].Sent Mail"   . ?s)
-                     ("/[Gmail].Trash"       . ?t)
-                     ("/[Gmail].All Mail"    . ?a)))
-
-            (setq mu4e-get-mail-command "offlineimap")
-
-            (setq
-             user-mail-address "joyfulmantis@gmail.com"
-             user-full-name  "Nathan Maxson")
-
-            (setq message-send-mail-function 'smtpmail-send-it
-                  smtpmail-stream-type 'starttls
-                  smtpmail-default-smtp-server "smtp.gmail.com"
-                  smtpmail-smtp-server "smtp.gmail.com"
-                  smtpmail-smtp-service 587)
-
-            (setq message-kill-buffer-on-exit t)
-            (setq mu4e-headers-include-related t)
-            (setq mu4e-headers-skip-duplicates t)))
-
 (req-package projectile
   :config (progn
             (projectile-global-mode)
