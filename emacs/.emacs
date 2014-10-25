@@ -70,6 +70,8 @@ re-downloaded in order to locate PACKAGE."
   :config (progn
             (global-auto-complete-mode)))
 
+(req-package diff-hl)
+
 (req-package dired+)
 
 (req-package elfeed)
@@ -169,20 +171,11 @@ re-downloaded in order to locate PACKAGE."
   :load-path "/usr/share/emacs24/site-lisp/mu4e/"
   :commands 'mu4e
   :config (progn
-            ;; default
-            ;; (setq mu4e-maildir "~/Maildir")
-
             (setq mu4e-drafts-folder "/[Gmail].Drafts")
             (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
             (setq mu4e-trash-folder  "/[Gmail].Trash")
 
-            ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
             (setq mu4e-sent-messages-behavior 'delete)
-
-            ;; setup some handy shortcuts
-            ;; you can quickly switch to your Inbox -- press ``ji''
-            ;; then, when you want archive some messages, move them to
-            ;; the 'All Mail' folder by pressing ``ma''.
 
             (setq mu4e-maildir-shortcuts
                   '( ("/INBOX"               . ?i)
@@ -190,10 +183,8 @@ re-downloaded in order to locate PACKAGE."
                      ("/[Gmail].Trash"       . ?t)
                      ("/[Gmail].All Mail"    . ?a)))
 
-            ;; allow for updating mail using 'U' in the main view:
             (setq mu4e-get-mail-command "offlineimap")
 
-            ;; something about ourselves
             (setq
              user-mail-address "joyfulmantis@gmail.com"
              user-full-name  "Nathan Maxson")
@@ -204,7 +195,6 @@ re-downloaded in order to locate PACKAGE."
                   smtpmail-smtp-server "smtp.gmail.com"
                   smtpmail-smtp-service 587)
 
-            ;; don't keep message buffers around
             (setq message-kill-buffer-on-exit t)
             (setq mu4e-headers-include-related t)
             (setq mu4e-headers-skip-duplicates t)))
