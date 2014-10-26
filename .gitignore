@@ -10,3 +10,5 @@ cabal-dev
 .cabal-sandbox/
 cabal.sandbox.config
 cabal.config
+/xmonad/.xmonad/xmonad-powerpc-linux
+/xmonad/.xmonad/xmonad.errors
