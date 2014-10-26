@@ -29,7 +29,7 @@
 (require 'package)
 
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "http://melpa.org/packages/") t)
 
 (package-initialize)
 
@@ -69,8 +69,6 @@ re-downloaded in order to locate PACKAGE."
 (req-package auto-complete
   :config (progn
             (global-auto-complete-mode)))
-
-(req-package diff-hl)
 
 (req-package dired+)
 
