@@ -22,7 +22,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     --spawn dmenu
-    , ((modm,               xK_p     ), spawn $ "dmenu_run -fn Inconsolata-12 -nb '" ++ solarizedBase3 ++ "' -nf '" ++ solarizedBase00 ++ "' -sb '" ++ solarizedBase2 ++ "' -sf '" ++ solarizedBase01 ++ "'")
+    , ((modm,               xK_p     ), spawn $ "dmenu_run -fn Inconsolata-18 -nb '" ++ solarizedBase3 ++ "' -nf '" ++ solarizedBase00 ++ "' -sb '" ++ solarizedBase2 ++ "' -sf '" ++ solarizedBase01 ++ "'")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)

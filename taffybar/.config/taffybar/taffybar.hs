@@ -27,7 +27,7 @@ mySep = colorize solarizedBase1 solarizedBase3 (escape " :: ")
 
 main = do
   defaultTaffybar defaultTaffybarConfig
-    { barHeight     = 19
+    { barHeight     = 28
     , endWidgets    = [ tray, clock, battery, notifications ]
     , startWidgets  = [ pager ]
     , widgetSpacing = 0 }
