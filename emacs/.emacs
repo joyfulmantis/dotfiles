@@ -67,8 +67,7 @@ re-downloaded in order to locate PACKAGE."
   :bind ("C-c SPC" . ace-jump-mode))
 
 (req-package auto-complete
-  :config (progn
-            (global-auto-complete-mode)))
+  :config (global-auto-complete-mode))
 
 (req-package dired+)
 
@@ -79,7 +78,6 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package flycheck
   :config (progn
-            (global-flycheck-mode)
             (setq flycheck-scalastyle-jar "/opt/scalastyle-batch_2.10-0.5.0/scalastyle-batch_2.10.jar"
                   flycheck-scalastylerc "/opt/scalastyle-batch_2.10-0.5.0/scalastyle_config.xml")))
 
@@ -111,7 +109,8 @@ re-downloaded in order to locate PACKAGE."
   :config (progn
             (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
             (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
-
+            (add-hook 'haskell-mode-hook 'flycheck-mode)
+            
             (setq haskell-process-auto-import-loaded-modules t)
             (setq haskell-process-log t)
             (setq haskell-process-suggest-remove-import-lines t)
@@ -165,6 +164,8 @@ re-downloaded in order to locate PACKAGE."
 (req-package magit-gh-pulls
   :require magit)
 
+(req-package markdown-mode)
+
 (req-package projectile
   :config (progn
             (projectile-global-mode)
@@ -176,7 +177,7 @@ re-downloaded in order to locate PACKAGE."
   :config (helm-projectile-on))
 
 (req-package scala-mode2)
-
+  
 (req-package sicp)
 
 (req-package sml-mode)
