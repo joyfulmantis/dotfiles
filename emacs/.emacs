@@ -1,10 +1,3 @@
-;;; .emacs --- My Emacs Configuration
-;;; Commentary:
-
-;;; Code:
-
-
-;;; Misc config
 (add-to-list 'default-frame-alist '(font . "Inconsolata-12"))
 (add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
 (add-to-list 'default-frame-alist '(menu-bar-lines . 0))
@@ -45,23 +38,45 @@ re-downloaded in order to locate PACKAGE."
         (package-refresh-contents)
         (require-package package min-version t)))))
 
-
-;;; And now the rest is req-package configuration
+;;; the all important use-package and req package
 (require-package 'use-package)
 (require 'use-package)
 
 (require-package 'req-package)
 (require 'req-package)
 
-;;; These are some packaes I want to learn sometime
-;; (use-package evil
-;;   :ensure t)
-;; (use-package multiple-cursors
-;;   :ensure t)
-;; (use-package org
-;;   :ensure t)
+;;; special case for a special package
+(require-package 'sicp)
 
-(req-package diminish)
+
+;;; And now the rest is req-package configuration
+
+;;; These are some packaes I want to learn sometime
+;; (req-package evil)
+;; (req-package multiple-cursors)
+;; (req-package org)
+
+(req-package ac-geiser
+  :require (auto-complete geiser)
+  :config (progn
+            (add-hook 'geiser-mode-hook 'ac-geiser-setup)
+            (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
+            (add-to-list 'ac-modes 'geiser-repl-mode)))
+
+(req-package ac-haskell-process
+  :require (auto-complete haskell-mode)
+  :bind ("C-c C-d" . ac-haskell-process-popup-doc)
+  :config (progn
+            (add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
+            (add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
+
+            (add-to-list 'ac-modes 'haskell-interactive-mode)
+            (defun set-auto-complete-as-completion-at-point-function ()
+              (add-to-list 'completion-at-point-functions 'auto-complete))
+            (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+            (add-to-list 'ac-modes 'haskell-interactive-mode)
+            (add-hook 'haskell-interactive-mode-hook 'set-auto-complete-as-completion-at-point-function)
+            (add-hook 'haskell-mode-hook 'set-auto-complete-as-completion-at-point-function)))
 
 (req-package ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode))
@@ -69,9 +84,24 @@ re-downloaded in order to locate PACKAGE."
 (req-package auto-complete
   :config (global-auto-complete-mode))
 
+(req-package diminish)
+
 (req-package dired+)
 
 (req-package elfeed)
+
+(req-package ensime
+  :require scala-mode2
+  :bind ("C-c C-c" . my-scala-eval-buffer)
+  :config (progn
+            (defun my-scala-eval-buffer ()
+              "My scala-eval-buffer method."
+              (interactive)
+              (ensime-inf-send-string ":reset")
+              (ensime-inf-send-string ":paste -raw")
+              (ensime-inf-eval-buffer)
+              (comint-send-string ensime-inf-buffer-name ""))
+            (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
 (req-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -83,20 +113,19 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package geiser)
 
-(req-package ac-geiser
-  :require (auto-complete geiser)
-  :config (progn
-            (add-hook 'geiser-mode-hook 'ac-geiser-setup)
-            (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
-            (add-to-list 'ac-modes 'geiser-repl-mode)))
-
 (req-package gist)
 
+(req-package git-commit-mode
+  :require magit)
+(req-package git-rebase-mode
+  :require magit)
+
+(req-package gitattributes-mode)
 (req-package gitconfig-mode)
 (req-package gitignore-mode)
-(req-package gitattributes-mode)
 
 (req-package haskell-mode
+  :mode "\\.hs\\'"
   :bind (("M-."     . haskell-mode-jump-to-def-or-tag)
          ("C-c C-l" . haskell-process-load-or-reload)
          ("C-`"     . haskell-interactive-bring)
@@ -115,30 +144,8 @@ re-downloaded in order to locate PACKAGE."
             (setq haskell-process-log t)
             (setq haskell-process-suggest-remove-import-lines t)
             (setq haskell-stylish-on-save t)
-            (setq haskell-tags-on-save t)
+            (setq haskell-tags-on-save t)))
 
-            )
-  :ensure t)
-
-(req-package shm
-  :require haskell-mode
-  :config (progn
-            (add-hook 'haskell-mode-hook 'structured-haskell-mode)))
-
-(req-package ac-haskell-process
-  :require (auto-complete haskell-mode)
-  :bind ("C-c C-d" . ac-haskell-process-popup-doc)
-  :config (progn
-            (add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
-            (add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
-
-            (add-to-list 'ac-modes 'haskell-interactive-mode)
-            (defun set-auto-complete-as-completion-at-point-function ()
-              (add-to-list 'completion-at-point-functions 'auto-complete))
-            (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
-            (add-to-list 'ac-modes 'haskell-interactive-mode)
-            (add-hook 'haskell-interactive-mode-hook 'set-auto-complete-as-completion-at-point-function)
-            (add-hook 'haskell-mode-hook 'set-auto-complete-as-completion-at-point-function)))
 
 (req-package helm
   :bind (("M-x"     . helm-M-x)
@@ -150,21 +157,24 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package helm-descbinds
   :require helm
-  :init
-  (helm-descbinds-mode))
+  :config (helm-descbinds-mode))
+
+(req-package helm-projectile
+  :require (helm projectile)
+  :config (helm-projectile-on))
 
 (req-package helm-swoop)
 
+(req-package jabber
+  :config (add-hook 'jabber-post-connect-hooks 'jabber-autoaway-start))
+
 (req-package magit)
 
-(req-package git-commit-mode
-  :require magit)
-(req-package git-rebase-mode
-  :require magit)
 (req-package magit-gh-pulls
   :require magit)
 
-(req-package markdown-mode)
+(req-package markdown-mode
+  :mode "\\.md\\'")
 
 (req-package projectile
   :config (progn
@@ -172,29 +182,29 @@ re-downloaded in order to locate PACKAGE."
             (setq projectile-mode-line
                   '(:eval (format " P[%s]" (projectile-project-name))))))
 
-(req-package helm-projectile
-  :require (helm projectile)
-  :config (helm-projectile-on))
+(req-package scala-mode2
+  :mode (("\\.scala\\'" . scala-mode)
+         ("\\.sc\\'" . scala-mode)))
 
-(req-package scala-mode2)
-  
-(req-package sicp)
+(req-package shm
+  :require haskell-mode
+  :config (add-hook 'haskell-mode-hook 'structured-haskell-mode))
 
-(req-package sml-mode)
-
-(req-package solarized-theme
-  :config (load-theme 'solarized-light))
+(req-package sml-mode
+  :mode "\\.sml\\'" )
 
 (req-package smartparens
   :config (progn
             (smartparens-global-mode)
             (show-smartparens-global-mode)))
 
+(req-package solarized-theme)
+
 (req-package undo-tree
   :config (global-undo-tree-mode)
   :diminish undo-tree-mode)
 
-(req-package-finish)
+(req-package zygospore
+  :bind ("C-x 1" . zygospore-toggle-delete-other-windows))
 
-(provide '.emacs)
-;;; .emacs ends here
+(req-package-finish)
