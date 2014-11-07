@@ -81,6 +81,11 @@ re-downloaded in order to locate PACKAGE."
 (req-package ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode))
 
+(req-package aggressive-indent
+  :config (progn
+            (global-aggressive-indent-mode)
+            (add-to-list 'aggressive-indent-excluded-modes 'haskell-mode)))
+
 (req-package auto-complete
   :config (global-auto-complete-mode))
 
@@ -189,6 +194,9 @@ re-downloaded in order to locate PACKAGE."
 (req-package shm
   :require haskell-mode
   :config (add-hook 'haskell-mode-hook 'structured-haskell-mode))
+
+(req-package smartscan
+  :config (smartscan-mode))
 
 (req-package sml-mode
   :mode "\\.sml\\'" )
