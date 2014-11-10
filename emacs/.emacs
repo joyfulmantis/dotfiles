@@ -187,6 +187,9 @@ re-downloaded in order to locate PACKAGE."
             (setq projectile-mode-line
                   '(:eval (format " P[%s]" (projectile-project-name))))))
 
+(req-package rainbow-delimiters
+  :config (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
 (req-package scala-mode2
   :mode (("\\.scala\\'" . scala-mode)
          ("\\.sc\\'" . scala-mode)))
@@ -203,6 +206,8 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package smartparens
   :config (progn
+            (require 'smartparens-config)
+            (sp-use-smartparens-bindings)
             (smartparens-global-mode)
             (show-smartparens-global-mode)))
 
