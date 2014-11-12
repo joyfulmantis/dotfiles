@@ -108,6 +108,9 @@ re-downloaded in order to locate PACKAGE."
               (comint-send-string ensime-inf-buffer-name ""))
             (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
+(req-package evil
+  :config (evil-mode))
+
 (req-package expand-region
   :bind ("C-=" . er/expand-region))
 
