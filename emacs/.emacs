@@ -52,7 +52,6 @@ re-downloaded in order to locate PACKAGE."
 ;;; And now the rest is req-package configuration
 
 ;;; These are some packaes I want to learn sometime
-;; (req-package evil)
 ;; (req-package multiple-cursors)
 ;; (req-package org)
 
@@ -87,7 +86,9 @@ re-downloaded in order to locate PACKAGE."
             (add-to-list 'aggressive-indent-excluded-modes 'haskell-mode)))
 
 (req-package auto-complete
-  :config (global-auto-complete-mode))
+  :config (progn
+            (global-auto-complete-mode)
+            (setq ac-ignore-case nil)))
 
 (req-package diminish)
 
@@ -109,7 +110,37 @@ re-downloaded in order to locate PACKAGE."
             (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
 (req-package evil
-  :config (evil-mode))
+  :require evil-leader
+  :config (progn
+            (evil-mode)
+            (define-key evil-normal-state-map (kbd "g f") 'helm-find-files)
+            (define-key evil-visual-state-map (kbd "C-g") 'evil-exit-visual-state)
+            (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)))
+
+(req-package evil-exchange
+  :require evil
+  :config (evil-exchange-install))
+
+(req-package evil-leader
+  :config (progn
+            (evil-leader/set-leader ",")
+            (evil-leader/set-key
+              "b" 'helm-mini
+              "c" 'evil-ace-jump-char-mode
+              "d" 'diff-buffer-with-file
+              "l" 'evil-ace-jump-line-mode
+              "p" 'evil-lisp-state
+              "s" 'save-buffer
+              "w" 'evil-ace-jump-word-mode
+              "x" 'helm-M-x)
+            (global-evil-leader-mode)))
+
+(req-package evil-lisp-state
+  :config (define-key evil-lisp-state-map (kbd "C-g") 'evil-normal-state))
+
+(req-package evil-nerd-commenter
+  :require evil
+  :config (evilnc-default-hotkeys))
 
 (req-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -117,7 +148,8 @@ re-downloaded in order to locate PACKAGE."
 (req-package flycheck
   :config (progn
             (setq flycheck-scalastyle-jar "/opt/scalastyle-batch_2.10-0.5.0/scalastyle-batch_2.10.jar"
-                  flycheck-scalastylerc "/opt/scalastyle-batch_2.10-0.5.0/scalastyle_config.xml")))
+                  flycheck-scalastylerc "/opt/scalastyle-batch_2.10-0.5.0/scalastyle_config.xml")
+            (global-flycheck-mode)))
 
 (req-package geiser)
 
@@ -146,7 +178,6 @@ re-downloaded in order to locate PACKAGE."
   :config (progn
             (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
             (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
-            (add-hook 'haskell-mode-hook 'flycheck-mode)
             
             (setq haskell-process-auto-import-loaded-modules t)
             (setq haskell-process-log t)
