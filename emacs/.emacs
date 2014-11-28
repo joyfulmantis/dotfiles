@@ -109,39 +109,6 @@ re-downloaded in order to locate PACKAGE."
               (comint-send-string ensime-inf-buffer-name ""))
             (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
-(req-package evil
-  :require evil-leader
-  :config (progn
-            (evil-mode)
-            (define-key evil-normal-state-map (kbd "g f") 'helm-find-files)
-            (define-key evil-visual-state-map (kbd "C-g") 'evil-exit-visual-state)
-            (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)))
-
-(req-package evil-exchange
-  :require evil
-  :config (evil-exchange-install))
-
-(req-package evil-leader
-  :config (progn
-            (evil-leader/set-leader ",")
-            (evil-leader/set-key
-              "b" 'helm-mini
-              "c" 'evil-ace-jump-char-mode
-              "d" 'diff-buffer-with-file
-              "l" 'evil-ace-jump-line-mode
-              "p" 'evil-lisp-state
-              "s" 'save-buffer
-              "w" 'evil-ace-jump-word-mode
-              "x" 'helm-M-x)
-            (global-evil-leader-mode)))
-
-(req-package evil-lisp-state
-  :config (define-key evil-lisp-state-map (kbd "C-g") 'evil-normal-state))
-
-(req-package evil-nerd-commenter
-  :require evil
-  :config (evilnc-default-hotkeys))
-
 (req-package expand-region
   :bind ("C-=" . er/expand-region))
 
@@ -185,7 +152,6 @@ re-downloaded in order to locate PACKAGE."
             (setq haskell-stylish-on-save t)
             (setq haskell-tags-on-save t)))
 
-
 (req-package helm
   :bind (("M-x"     . helm-M-x)
          ("M-y"     . helm-show-kill-ring)
@@ -205,7 +171,9 @@ re-downloaded in order to locate PACKAGE."
 (req-package helm-swoop)
 
 (req-package jabber
-  :config (add-hook 'jabber-post-connect-hooks 'jabber-autoaway-start))
+  :config (progn
+            (add-hook 'jabber-post-connect-hooks 'jabber-autoaway-start)
+            (setq jabber-alert-message-hooks '(jabber-message-notifications jabber-message-echo jabber-message-scroll))))
 
 (req-package magit)
 
