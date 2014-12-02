@@ -4,18 +4,18 @@ import           Solarized
 
 import           System.Exit
 
-import           PagerHints                   (pagerHints)
+import           System.Taffybar.Hooks.PagerHints (pagerHints)
 
 import           XMonad
 
-import           XMonad.Hooks.EwmhDesktops    (ewmh)
+import           XMonad.Hooks.EwmhDesktops        (ewmh)
 import           XMonad.Hooks.ManageDocks
 
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Renamed
 
-import qualified Data.Map                     as M
-import qualified XMonad.StackSet              as W
+import qualified Data.Map                         as M
+import qualified XMonad.StackSet                  as W
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
