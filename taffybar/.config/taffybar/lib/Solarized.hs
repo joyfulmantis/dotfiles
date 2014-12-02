@@ -1,1 +1,1 @@
-/home/nathan/Documents/source/solarized-xmonad/Solarized.hs
+../../../../solarized-xmonad/Solarized.hs
