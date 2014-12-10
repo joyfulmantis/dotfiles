@@ -120,5 +120,5 @@ main = xmonad $ ewmh $ pagerHints $ defaultConfig
 		, manageHook	     = manageHook defaultConfig <+> manageDocks
 		, modMask	     = mod1Mask
                 , normalBorderColor  = solarizedBase3
-                , terminal           = "gnome-terminal"
+                , terminal           = "emacsclient -c -a ''"
                 , workspaces         = myWorkspaces }
