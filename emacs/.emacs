@@ -90,6 +90,9 @@ re-downloaded in order to locate PACKAGE."
             (global-auto-complete-mode)
             (setq ac-ignore-case nil)))
 
+(req-package auto-package-update
+  :config (auto-package-update-now))
+
 (req-package diminish)
 
 (req-package dired+)
@@ -117,6 +120,11 @@ re-downloaded in order to locate PACKAGE."
             (setq flycheck-scalastyle-jar "/opt/scalastyle-batch_2.10-0.5.0/scalastyle-batch_2.10.jar"
                   flycheck-scalastylerc "/opt/scalastyle-batch_2.10-0.5.0/scalastyle_config.xml")
             (global-flycheck-mode)))
+
+(req-package flycheck-haskell
+  :require flycheck
+  :config (progn
+            (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
 
 (req-package geiser)
 
@@ -146,11 +154,11 @@ re-downloaded in order to locate PACKAGE."
             (define-key haskell-mode-map (kbd "C-c c")   'haskell-process-cabal)
             (define-key haskell-mode-map (kbd "SPC")     'haskell-mode-contextual-space)
             
-            (setq haskell-process-auto-import-loaded-modules t)
-            (setq haskell-process-log t)
-            (setq haskell-process-suggest-remove-import-lines t)
-            (setq haskell-stylish-on-save t)
-            (setq haskell-tags-on-save t)))
+            (setq haskell-process-auto-import-loaded-modules t
+                  haskell-process-log t
+                  haskell-process-suggest-remove-import-lines t
+                  haskell-stylish-on-save t
+                  haskell-tags-on-save t)))
 
 (req-package helm
   :bind (("M-x"     . helm-M-x)
@@ -214,7 +222,8 @@ re-downloaded in order to locate PACKAGE."
             (smartparens-global-mode)
             (show-smartparens-global-mode)))
 
-(req-package solarized-theme)
+(req-package solarized-theme
+  :config (load-theme 'solarized-light))
 
 (req-package undo-tree
   :config (global-undo-tree-mode)
