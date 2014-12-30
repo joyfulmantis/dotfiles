@@ -77,6 +77,9 @@ re-downloaded in order to locate PACKAGE."
             (add-hook 'haskell-interactive-mode-hook 'set-auto-complete-as-completion-at-point-function)
             (add-hook 'haskell-mode-hook 'set-auto-complete-as-completion-at-point-function)))
 
+(req-package ac-js2
+  :config (add-hook 'js2-mode-hook 'ac-js2-mode))
+
 (req-package ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode))
 
@@ -111,6 +114,11 @@ re-downloaded in order to locate PACKAGE."
               (ensime-inf-eval-buffer)
               (comint-send-string ensime-inf-buffer-name ""))
             (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
+
+(req-package evil
+  :config (progn
+            (setq evil-default-state 'emacs)
+            (evil-mode)))
 
 (req-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -183,6 +191,9 @@ re-downloaded in order to locate PACKAGE."
             (add-hook 'jabber-post-connect-hooks 'jabber-autoaway-start)
             (setq jabber-alert-message-hooks
                   '(jabber-message-notifications jabber-message-echo jabber-message-scroll))))
+
+(req-package js2-mode
+  :config (add-hook 'js-mode-hook 'js2-minor-mode))
 
 (req-package magit)
 
