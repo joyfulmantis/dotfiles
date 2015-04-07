@@ -93,9 +93,6 @@ re-downloaded in order to locate PACKAGE."
             (global-auto-complete-mode)
             (setq ac-ignore-case nil)))
 
-(req-package auto-package-update
-  :config (auto-package-update-now))
-
 (req-package diminish)
 
 (req-package dired+)
@@ -114,11 +111,6 @@ re-downloaded in order to locate PACKAGE."
               (ensime-inf-eval-buffer)
               (comint-send-string ensime-inf-buffer-name ""))
             (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
-
-(req-package evil
-  :config (progn
-            (setq evil-default-state 'emacs)
-            (evil-mode)))
 
 (req-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -186,12 +178,6 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package helm-swoop)
 
-(req-package jabber
-  :config (progn
-            (add-hook 'jabber-post-connect-hooks 'jabber-autoaway-start)
-            (setq jabber-alert-message-hooks
-                  '(jabber-message-notifications jabber-message-echo jabber-message-scroll))))
-
 (req-package js2-mode
   :config (add-hook 'js-mode-hook 'js2-minor-mode))
 
@@ -244,3 +230,5 @@ re-downloaded in order to locate PACKAGE."
   :bind ("C-x 1" . zygospore-toggle-delete-other-windows))
 
 (req-package-finish)
+(put 'narrow-to-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
