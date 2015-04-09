@@ -144,7 +144,8 @@ re-downloaded in order to locate PACKAGE."
   :config (progn
             (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
             (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
-
+            (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+            
             (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
             (define-key haskell-mode-map (kbd "C-`")     'haskell-interactive-bring)
             (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
@@ -201,10 +202,6 @@ re-downloaded in order to locate PACKAGE."
 (req-package scala-mode2
   :mode (("\\.scala\\'" . scala-mode)
          ("\\.sc\\'" . scala-mode)))
-
-(req-package shm
-  :require haskell-mode
-  :config (add-hook 'haskell-mode-hook 'structured-haskell-mode))
 
 (req-package smartscan
   :config (smartscan-mode))
