@@ -182,7 +182,8 @@ re-downloaded in order to locate PACKAGE."
 (req-package js2-mode
   :config (add-hook 'js-mode-hook 'js2-minor-mode))
 
-(req-package magit)
+(req-package magit
+  :config (setq magit-last-seen-setup-instructions "1.4.0"))
 
 (req-package magit-gh-pulls
   :require magit)
@@ -218,6 +219,8 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package solarized-theme
   :config (load-theme 'solarized-light))
+
+(req-package sx)
 
 (req-package undo-tree
   :config (global-undo-tree-mode)
