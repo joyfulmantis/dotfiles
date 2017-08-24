@@ -6,9 +6,12 @@
 (setq custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default))
       inhibit-startup-screen t
       mouse-autoselect-window t
-      x-super-keysym 'meta)
+      x-super-keysym 'meta
+      ispell-dictionary "english"
+      )
 
 (setq-default indent-tabs-mode nil)
+(set-default 'truncate-lines t)
 
 (column-number-mode)
 
@@ -45,15 +48,17 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'req-package)
 (require 'req-package)
 
-;;; special case for a special package
-(require-package 'sicp)
-
-
-;;; And now the rest is req-package configuration
-
-;;; These are some packaes I want to learn sometime
-;; (req-package multiple-cursors)
-;; (req-package org)
+(req-package org
+  :config (progn
+            (defun endless/org-ispell ()
+              "Configure `ispell-skip-region-alist' for `org-mode'."
+              (make-local-variable 'ispell-skip-region-alist)
+              (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+              (add-to-list 'ispell-skip-region-alist '("~" "~"))
+              (add-to-list 'ispell-skip-region-alist '("=" "="))
+              (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC")))
+            (add-hook 'org-mode-hook #'endless/org-ispell)
+            (add-hook 'org-mode-hook #'flyspell-mode)))
 
 (req-package ac-geiser
   :require (auto-complete geiser)
@@ -61,21 +66,6 @@ re-downloaded in order to locate PACKAGE."
             (add-hook 'geiser-mode-hook 'ac-geiser-setup)
             (add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
             (add-to-list 'ac-modes 'geiser-repl-mode)))
-
-(req-package ac-haskell-process
-  :require (auto-complete haskell-mode)
-  :bind ("C-c C-d" . ac-haskell-process-popup-doc)
-  :config (progn
-            (add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
-            (add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
-
-            (add-to-list 'ac-modes 'haskell-interactive-mode)
-            (defun set-auto-complete-as-completion-at-point-function ()
-              (add-to-list 'completion-at-point-functions 'auto-complete))
-            (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
-            (add-to-list 'ac-modes 'haskell-interactive-mode)
-            (add-hook 'haskell-interactive-mode-hook 'set-auto-complete-as-completion-at-point-function)
-            (add-hook 'haskell-mode-hook 'set-auto-complete-as-completion-at-point-function)))
 
 (req-package ac-js2
   :config (add-hook 'js2-mode-hook 'ac-js2-mode))
@@ -90,8 +80,9 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package auto-complete
   :config (progn
-            (global-auto-complete-mode)
             (setq ac-ignore-case nil)))
+
+(req-package company)
 
 (req-package diminish)
 
@@ -121,11 +112,6 @@ re-downloaded in order to locate PACKAGE."
                   flycheck-scalastylerc "/opt/scalastyle-batch_2.10-0.5.0/scalastyle_config.xml")
             (global-flycheck-mode)))
 
-(req-package flycheck-haskell
-  :require flycheck
-  :config (progn
-            (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)))
-
 (req-package geiser)
 
 (req-package gist)
@@ -142,24 +128,8 @@ re-downloaded in order to locate PACKAGE."
 (req-package haskell-mode
   :mode "\\.hs\\'"
   :config (progn
-            (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-            (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
             (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-            
-            (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
-            (define-key haskell-mode-map (kbd "C-`")     'haskell-interactive-bring)
-            (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
-            (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
-            (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-            (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-            (define-key haskell-mode-map (kbd "C-c c")   'haskell-process-cabal)
-            (define-key haskell-mode-map (kbd "SPC")     'haskell-mode-contextual-space)
-            
-            (setq haskell-process-auto-import-loaded-modules t
-                  haskell-process-log t
-                  haskell-process-suggest-remove-import-lines t
-                  haskell-stylish-on-save t
-                  haskell-tags-on-save t)))
+            (add-hook 'haskell-mode-hook 'intero-mode)))
 
 (req-package helm
   :bind (("M-x"     . helm-M-x)
@@ -178,6 +148,9 @@ re-downloaded in order to locate PACKAGE."
   :config (helm-projectile-on))
 
 (req-package helm-swoop)
+
+(req-package intero
+  )
 
 (req-package js2-mode
   :config (add-hook 'js-mode-hook 'js2-minor-mode))
@@ -199,6 +172,14 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package rainbow-delimiters
   :config (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(req-package rust-mode
+  :config (add-hook 'rust-mode-hook #'racer-mode))
+
+(req-package racer
+  :config (progn
+            (add-hook 'racer-mode-hook #'eldoc-mode)
+            (add-hook 'racer-mode-hook #'company-mode)))
 
 (req-package scala-mode2
   :mode (("\\.scala\\'" . scala-mode)
@@ -231,4 +212,20 @@ re-downloaded in order to locate PACKAGE."
 
 (req-package-finish)
 (put 'narrow-to-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (zygospore sx smartparens smartscan racer magit-gh-pulls intero helm-swoop helm-descbinds haskell-mode gitignore-mode gitconfig-mode gitattributes-mode gist ensime dired+ company ace-jump-mode ac-js2 ac-geiser org req-package use-package undo-tree solarized-theme sml-mode rust-mode rainbow-delimiters pdf-tools markdown-mode magit ledger js2-mode helm-projectile git-timemachine geiser flycheck flx-ido expand-region elfeed aggressive-indent))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
