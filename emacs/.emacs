@@ -1,32 +1,28 @@
-;;;(add-to-list 'default-frame-alist '(font . "Consolas-12"))
+;;; .emacs --- My .emacs config
+;;; Commentary:
+
+;;; Code:
+;;;(add-to-list 'default-frame-alist '(font . "Inconsolata-12"))
 (add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
 (add-to-list 'default-frame-alist '(menu-bar-lines . 0))
 (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
 
-(setq custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default))
-      inhibit-startup-screen t
-      mouse-autoselect-window t
-      x-super-keysym 'meta
-      ispell-dictionary "english"
-      )
+(setq
+ inhibit-startup-screen t
+ mouse-autoselect-window t
+ x-super-keysym 'meta )
 
 (setq-default indent-tabs-mode nil)
-(set-default 'truncate-lines t)
+(set-default 'truncate-lines nil)
 
 (column-number-mode)
 
 (global-unset-key (kbd "C-z"))
 
-(eval-after-load "dired-aux"
-  '(add-to-list 'dired-compress-file-suffixes
-                '("\\.zip\\'" ".zip" "unzip")))
-
-;;; Setup package
 (require 'package)
 
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-
+(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+			 ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 (package-initialize)
 
 (defun require-package (package &optional min-version no-refresh)
@@ -78,10 +74,11 @@ re-downloaded in order to locate PACKAGE."
             (add-to-list 'aggressive-indent-excluded-modes 'haskell-mode)))
 
 (use-package auto-complete
-  :config (progn
-            (setq ac-ignore-case nil)))
+  :config (setq ac-ignore-case nil))
 
 (use-package company)
+
+(use-package csharp-mode)
 
 (use-package diminish)
 
@@ -106,10 +103,7 @@ re-downloaded in order to locate PACKAGE."
   :bind ("C-=" . er/expand-region))
 
 (use-package flycheck
-  :config (progn
-            (setq flycheck-scalastyle-jar "/opt/scalastyle-batch_2.10-0.5.0/scalastyle-batch_2.10.jar"
-                  flycheck-scalastylerc "/opt/scalastyle-batch_2.10-0.5.0/scalastyle_config.xml")
-            (global-flycheck-mode)))
+  :config (global-flycheck-mode))
 
 (use-package geiser)
 
@@ -156,8 +150,7 @@ re-downloaded in order to locate PACKAGE."
 (use-package js2-mode
   :config (add-hook 'js-mode-hook 'js2-minor-mode))
 
-(use-package magit
-  :config (setq magit-last-seen-setup-instructions "1.4.0"))
+(use-package magit)
 
 (use-package magit-gh-pulls
 ;;;  :require magit
@@ -166,11 +159,11 @@ re-downloaded in order to locate PACKAGE."
 (use-package markdown-mode
   :mode "\\.md\\'")
 
+(use-package omnisharp
+  :config (add-hook 'csharp-mode-hook 'omnisharp-mode))
+
 (use-package projectile
-  :config (progn
-            (projectile-global-mode)
-            (setq projectile-mode-line
-                  '(:eval (format " P[%s]" (projectile-project-name))))))
+  :config (projectile-mode))
 
 (use-package rainbow-delimiters
   :config (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
@@ -201,7 +194,7 @@ re-downloaded in order to locate PACKAGE."
             (show-smartparens-global-mode)))
 
 (use-package solarized-theme
-  :config (load-theme 'solarized-light))
+  :config (load-theme 'solarized-dark t))
 
 (use-package sx)
 
@@ -221,12 +214,17 @@ re-downloaded in order to locate PACKAGE."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("0598c6a29e13e7112cfbc2f523e31927ab7dce56ebb2016b567e1eff6dc1fd4f" default)))
  '(package-selected-packages
    (quote
-    (scala-mode2 dired+ zygospore undo-tree sx solarized-theme sml-mode smartscan smartparens req-package rainbow-delimiters racer projectile magit intero helm-swoop gitignore-mode gitconfig-mode gitattributes-mode gist geiser expand-region elfeed el-get diminish auto-complete aggressive-indent ace-jump-mode ac-js2))))
+    (omnisharp csharp-mode zygospore use-package undo-tree sx solarized-theme sml-mode smartscan smartparens rainbow-delimiters racer magit-gh-pulls intero helm-swoop helm-projectile helm-descbinds gitignore-mode gitconfig-mode gitattributes-mode gist expand-region ensime elfeed diminish aggressive-indent ace-jump-mode ac-js2 ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(provide '.emacs)
+;;; .emacs ends here
